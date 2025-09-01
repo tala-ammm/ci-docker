@@ -51,3 +51,11 @@ jobs:
       run: |
         docker stop testcontainer
         docker rm testcontainer
+
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+    - name: Push image to Docker Hub
+      run: |
+        docker tag flask-ci-docker ${{ secrets.DOCKERHUB_USERNAME }}/flask-ci-docker:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-ci-docker:latest
